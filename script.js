@@ -474,29 +474,6 @@ if (!window.location.hash) {
     showSection('home');
 }
 
-// Handle contact form submission
-const contactForm = document.querySelector('.contact-form form');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(contactForm);
-        const data = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            subject: formData.get('subject'),
-            message: formData.get('message')
-        };
-                
-        // Show success message
-        alert('Mensaje enviado correctamente. Nos pondremos en contacto pronto.');
-        
-        // Reset form
-        contactForm.reset();
-    });
-}
-
 // Add smooth scrolling
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
