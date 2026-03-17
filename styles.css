@@ -35,6 +35,29 @@ body {
     gap: 1.5rem;
 }
 
+.debut-album-text {
+    font-weight: 900;
+    font-size: 4rem;
+    background: linear-gradient(to right, var(--gold), var(--white));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-animation 2s ease infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 .social-link {
     width: 35.8px;
     height: 35.8px;
