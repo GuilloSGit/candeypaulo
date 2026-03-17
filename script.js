@@ -329,46 +329,96 @@ class LanguageManager {
                 e.stopPropagation();
                 const lang = btn.dataset.lang;
                 this.setLanguage(lang);
+                // Ensure menu button shows correct state after language change
+                if (typeof updateMenuButton === 'function') {
+                    updateMenuButton();
+                }
             });
         });
         
-        // Handle dropdown hover behavior
+        // Handle dropdown behavior - different for desktop and mobile
         const dropdown = document.querySelector('.language-dropdown');
         const menu = document.querySelector('.dropdown-menu');
+        const toggle = dropdown.querySelector('.dropdown-toggle');
         
         if (dropdown && menu) {
-            dropdown.addEventListener('mouseenter', () => {
-                clearTimeout(this.dropdownTimeout);
-                menu.style.display = 'block';
-                setTimeout(() => {
-                    menu.style.opacity = '1';
-                    menu.style.visibility = 'visible';
-                }, 10);
-            });
+            // Check if device supports touch (mobile/tablet)
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
             
-            dropdown.addEventListener('mouseleave', () => {
-                this.dropdownTimeout = setTimeout(() => {
-                    menu.style.opacity = '0';
-                    menu.style.visibility = 'hidden';
+            if (isTouchDevice) {
+                // Mobile behavior: click to toggle
+                let isMenuOpen = false;
+                
+                toggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (!isMenuOpen) {
+                        // Open menu
+                        menu.style.display = 'block';
+                        setTimeout(() => {
+                            menu.style.opacity = '1';
+                            menu.style.visibility = 'visible';
+                        }, 10);
+                        isMenuOpen = true;
+                    } else {
+                        // Close menu
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        setTimeout(() => {
+                            menu.style.display = 'none';
+                        }, 300);
+                        isMenuOpen = false;
+                    }
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (isMenuOpen && !dropdown.contains(e.target)) {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        setTimeout(() => {
+                            menu.style.display = 'none';
+                        }, 300);
+                        isMenuOpen = false;
+                    }
+                });
+                
+            } else {
+                // Desktop behavior: hover
+                dropdown.addEventListener('mouseenter', () => {
+                    clearTimeout(this.dropdownTimeout);
+                    menu.style.display = 'block';
                     setTimeout(() => {
-                        menu.style.display = 'none';
-                    }, 300);
-                }, 200);
-            });
-            
-            menu.addEventListener('mouseenter', () => {
-                clearTimeout(this.dropdownTimeout);
-            });
-            
-            menu.addEventListener('mouseleave', () => {
-                this.dropdownTimeout = setTimeout(() => {
-                    menu.style.opacity = '0';
-                    menu.style.visibility = 'hidden';
-                    setTimeout(() => {
-                        menu.style.display = 'none';
-                    }, 300);
-                }, 200);
-            });
+                        menu.style.opacity = '1';
+                        menu.style.visibility = 'visible';
+                    }, 10);
+                });
+                
+                dropdown.addEventListener('mouseleave', () => {
+                    this.dropdownTimeout = setTimeout(() => {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        setTimeout(() => {
+                            menu.style.display = 'none';
+                        }, 300);
+                    }, 200);
+                });
+                
+                menu.addEventListener('mouseenter', () => {
+                    clearTimeout(this.dropdownTimeout);
+                });
+                
+                menu.addEventListener('mouseleave', () => {
+                    this.dropdownTimeout = setTimeout(() => {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        setTimeout(() => {
+                            menu.style.display = 'none';
+                        }, 300);
+                    }, 200);
+                });
+            }
         }
     }
     
@@ -414,16 +464,24 @@ menuBtns.forEach(btn => {
         e.preventDefault();
         e.stopPropagation();
         navOverlay.classList.toggle('active');
+        updateMenuButton();
     });
 });
 
 // Close menu when clicking on links
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
+        // Don't close menu if clicking on language dropdown or its children
+        if (link.closest('.language-dropdown')) {
+            e.preventDefault();
+            return;
+        }
+        
         e.preventDefault();
         const targetId = link.getAttribute('href').substring(1);
         showSection(targetId);
         navOverlay.classList.remove('active');
+        updateMenuButton();
     });
 });
 
@@ -431,6 +489,7 @@ navLinks.forEach(link => {
 navOverlay.addEventListener('click', (e) => {
     if (e.target === navOverlay) {
         navOverlay.classList.remove('active');
+        updateMenuButton();
     }
 });
 
@@ -515,6 +574,7 @@ cards.forEach(card => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && navOverlay.classList.contains('active')) {
         navOverlay.classList.remove('active');
+        updateMenuButton();
     }
 });
 
@@ -604,9 +664,40 @@ function handleContactForm(e) {
         });
 }
 
+// Update menu button text based on menu state
+function updateMenuButton() {
+    const isOpen = navOverlay.classList.contains('active');
+    menuBtns.forEach(btn => {
+        btn.textContent = isOpen ? '✕' : (btn.dataset.text || 'MENU');
+    });
+}
+
 // Mobile menu handling
 let touchStartX = 0;
 let touchEndX = 0;
+
+function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+    
+    // Swipe left to open menu
+    if (diff < -swipeThreshold) {
+        const navOverlay = document.getElementById('navOverlay');
+        if (navOverlay && !navOverlay.classList.contains('active')) {
+            navOverlay.classList.add('active');
+            updateMenuButton();
+        }
+    }
+    
+    // Swipe right to close menu
+    if (diff > swipeThreshold) {
+        const navOverlay = document.getElementById('navOverlay');
+        if (navOverlay && navOverlay.classList.contains('active')) {
+            navOverlay.classList.remove('active');
+            updateMenuButton();
+        }
+    }
+}
 
 document.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;

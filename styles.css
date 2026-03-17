@@ -27,7 +27,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     background: var(--dark-red);
-    padding: 2rem 1rem;
+    padding: 2rem 0.3rem;
     border-radius: 0 50px 50px 0;
     z-index: 1000;
     display: flex;
@@ -49,6 +49,7 @@ body {
 
 /* Menu Button */
 .menu-btn {
+    padding: 5px 7px;
     position: fixed;
     top: 2rem;
     right: 2rem;
@@ -91,6 +92,7 @@ body {
 }
 
 .nav-content {
+    padding: 5px 5px;
     text-align: center;
 }
 
@@ -586,7 +588,7 @@ body {
 /* Responsive Design */
 @media (max-width: 768px) {
     .social-sidebar {
-        padding: 1rem 0.5rem;
+        padding: 2rem 0.5rem;
         gap: 1rem;
     }
     
@@ -1057,4 +1059,19 @@ body {
 
 .nav-close:hover {
     color: var(--gold);
+}
+
+/* Mobile: Collapsible sidebar for small screens */
+@media (max-width: 500px) {
+    .social-sidebar {
+        transform: translateY(-50%) translateX(calc(-100% + 12px));
+        transition: transform 0.3s ease;
+        cursor: pointer;
+        padding-right: 12px;
+    }
+    
+    .social-sidebar:hover,
+    .social-sidebar:active {
+        transform: translateY(-50%) translateX(0);
+    }
 }
