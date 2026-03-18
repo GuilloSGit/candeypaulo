@@ -1098,3 +1098,33 @@ body {
         transform: translateY(-50%) translateX(0);
     }
 }
+
+/* Accessibility: Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    /* Disable gradient text animation */
+    .debut-album-text {
+        animation: none;
+        background-position: 0% 50%;
+    }
+    
+    /* Disable button sparkles */
+    .button-sparkle,
+    .sparkle {
+        display: none;
+        animation: none;
+    }
+    
+    /* Disable sparkle cursor effect */
+    .sparkle-cursor {
+        display: none;
+    }
+    
+    /* Disable all transitions */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
