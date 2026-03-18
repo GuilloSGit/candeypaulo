@@ -549,8 +549,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Add parallax effect to hero title
+// Add parallax effect to hero title (desktop only)
 window.addEventListener('scroll', () => {
+    // Disable parallax on mobile to prevent overlapping elements
+    if (window.innerWidth <= 768) {
+        return;
+    }
     const scrolled = window.pageYOffset;
     const heroTitle = document.querySelector('.hero-title h1');
     if (heroTitle) {
@@ -730,6 +734,5 @@ if ('IntersectionObserver' in window) {
 
 // Add console welcome message
 console.log('%c🎵 Cande y Paulo - Sitio Oficial', 'color: #d4af37; font-size: 15px; font-weight: bold;');
-console.log('%cBienvenidos al sitio oficial del dúo musical', 'color: #ffffff; font-size: 14px;');
 console.log('%cCreado por Guillermo Andrada', 'color: #d4af37; font-size: 12px;');
 console.log('https://ga-software.dev - guillermoandrada@gmail.com');

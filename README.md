@@ -129,7 +129,7 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 🎶 Sobre Cande y Paulo
 
-Cande y Paulo es un dúo musical argentino conocido por su álbum debut y sus cautivadoras presentaciones en vivo. Su música combina elementos del pop latino con influencias folclóricas, creando un sonido único que ha resonado con audiencias en toda América Latina.
+Cande y Paulo es un dúo musical argentino conocido por sus cautivadoras presentaciones en vivo. Su música combina elementos del pop latino con influencias folclóricas, creando un sonido único que ha resonado con audiencias en toda América Latina.
 
 **Redes Sociales Oficiales**:
 - [Instagram](https://www.instagram.com/candeypaulo/)
