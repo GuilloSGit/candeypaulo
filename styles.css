@@ -255,8 +255,8 @@ body {
 .hero-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    max-width: 1000px;
+    gap: 8rem;
+    max-width: 1400px;
     width: 100%;
     align-items: center;
 }
@@ -272,6 +272,8 @@ body {
     height: 250px;
     object-fit: cover;
     display: block;
+    position: relative;
+    filter: brightness(1.2);
 }
 
 .hero-divider {
@@ -279,7 +281,6 @@ body {
     height: 40px;
     background: var(--gradient-bottom);
     margin: -1rem 0;
-    z-index: 10;
 }
 
 .hero-logo {
@@ -334,10 +335,14 @@ body {
         width: 280px;
         height: 280px;
     }
+
+    .hero-divider {
+        height: 30px;
+    }
     
     .hero-logo {
         width: 180px;
-        bottom: -70px;
+        bottom: -50px;
         left: -20px;
     }
 }
